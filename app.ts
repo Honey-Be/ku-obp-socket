@@ -13,7 +13,7 @@ const cors = require("cors");
 const app = express();
 app.use(
   cors({
-    origin: [process.env.OBP, "http://localhost:3000"],
+    origin: [process.env.KU_OBP_URL, "http://localhost:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
