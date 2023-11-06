@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.ts",
     "build": "echo \"Build command goes here\"",
-    "start": "node app.ts",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
