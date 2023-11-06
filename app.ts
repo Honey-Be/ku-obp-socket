@@ -1,10 +1,39 @@
-import {
-  CHESS_INFO,
-  ChessAction,
-  ChessStatus,
-  IdInfo,
-  initialChessStatus,
-} from "./config";
+const CHESS_INFO = {
+  MIN_PLAYER: 2,
+  MAX_PLAYER: 2,
+};
+
+interface ChessStatus {
+  roomKey: string | null;
+  size: 0 | 1 | 2;
+  host: string | null;
+  guest: string | null;
+  whitePlayer: string | null;
+  blackPlayer: string | null;
+  isStarted: boolean;
+  isEnded: boolean;
+}
+
+const initialChessStatus: ChessStatus = {
+  roomKey: null,
+  size: 0,
+  host: null,
+  guest: null,
+  whitePlayer: null,
+  blackPlayer: null,
+  isStarted: false,
+  isEnded: false,
+};
+
+interface IdInfo {
+  playerName: string;
+  roomKey: string;
+}
+
+interface ChessAction {
+  from: string;
+  to: string;
+}
 
 const express = require("express");
 const { Server } = require("socket.io");
