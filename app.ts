@@ -1,3 +1,5 @@
+import { BlobOptions } from "buffer";
+
 const express = require("express");
 const { Server } = require("socket.io");
 const cors = require("cors");
@@ -18,7 +20,7 @@ const server = app.listen(port, () =>
 
 const io = new Server(server, {
   cors: {
-    origin: [process.env.OBP, "http://localhost:3000"],
+    origin: [process.env.KU_OBP_URL, "http://localhost:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -32,10 +34,24 @@ const GAME_INFO = {
   },
 };
 
+interface ChessStatus {
+  whitePlayer: string | null;
+  blackPlayer: string | null;
+  isStarted: boolean;
+  isEnded: boolean;
+}
+
+const initialChessStatus = {
+  whitePlayer: null,
+  blackPlayer: null,
+  isStarted: false,
+  isEnded: false,
+};
+
 const roomKeys: Set<string> = new Set();
 const roomPlayers: { [roomKey: string]: Set<string> } = {};
 const playerRoom: { [playerName: string]: string } = {};
-const roomStatus: { [roomKey: string]: { [name: string]: string } } = {};
+const chessStatus: { [roomKey: string]: ChessStatus } = {};
 
 io.on("connection", onConnected);
 
@@ -50,7 +66,7 @@ function onConnected(socket: any) {
 
       if (!roomPlayers[roomKey]) {
         roomPlayers[roomKey] = new Set();
-        roomStatus[roomKey] = {};
+        chessStatus[roomKey] = initialChessStatus;
         roomKeys.add(roomKey);
       }
 
@@ -63,12 +79,17 @@ function onConnected(socket: any) {
       playerRoom[playerName] = roomKey;
 
       if (roomPlayers[roomKey].size === 1) {
-        roomStatus[roomKey][playerName] = "w";
-      } else if (!(playerName in roomStatus[roomKey])) {
-        roomStatus[roomKey][playerName] = "b";
+        Math.random() < 0.5
+          ? (chessStatus[roomKey].whitePlayer = playerName)
+          : (chessStatus[roomKey].blackPlayer = playerName);
+      } else {
+        chessStatus[roomKey].whitePlayer === null
+          ? (chessStatus[roomKey].whitePlayer = playerName)
+          : (chessStatus[roomKey].blackPlayer = playerName);
       }
 
-      socket.emit("color", roomStatus[roomKey][playerName]);
+      const color = chessStatus[roomKey].whitePlayer === playerName ? "w" : "b";
+      socket.emit("color", color);
       io.to(roomKey).emit("newPlayer", playerName);
     }
   );
