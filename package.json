@@ -1,0 +1,26 @@
+{
+  "name": "ku-obp-socket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "dev": "nodemon app.ts",
+    "build": "echo \"Build command goes here\"",
+    "start": "node app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.8.10",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}
