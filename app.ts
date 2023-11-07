@@ -111,7 +111,7 @@ function onConnected(socket: any) {
 
       const color = chessStatus[roomKey].whitePlayer === playerName ? "w" : "b";
       socket.emit("color", color);
-      io.to(roomKey).emit("newPlayer", playerName);
+      io.to(roomKey).emit("isStarted", chessStatus[roomKey].isStarted);
 
       console.log(chessStatus[roomKey]);
     }
