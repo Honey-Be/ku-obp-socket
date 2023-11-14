@@ -14,6 +14,8 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     npm ci --include=dev
 USER node
 ADD . .
+RUN npm install ts-node typescript
+RUN npm install
 CMD ["npm", "run", "dev"]
 
 
@@ -26,4 +28,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     npm ci --omit=dev
 USER node
 COPY . .
+RUN npm install ts-node typescript
+RUN npm install
 CMD ["npm", "run", "start"]
